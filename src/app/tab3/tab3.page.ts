@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { NavController, NavParams} from '@ionic/angular';
+
 
 @Component({
   selector: 'app-tab3',
@@ -7,6 +9,16 @@ import { Component } from '@angular/core';
 })
 export class Tab3Page {
 
-  constructor() {}
+  public color:string;
 
+  constructor(public navCtrl: NavController) {
+
+  }
+
+  CambiarColor(){
+
+    this.color="#ff6f60";
+    
+    console.log(this.color);
+  }
 }

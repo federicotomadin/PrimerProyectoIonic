@@ -24,3 +24,29 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+
+
+.my-custom-class {
+    background: #e5e5e5;
+    text-align: center;
+  }
+
+  .alert-title.sc-ion-alert-md {
+    text-align: center;
+    
+  }
+  
+  .alert-sub-title.sc-ion-alert-md {
+    text-align: center;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 5px;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    font-weight: normal;
+  }
+

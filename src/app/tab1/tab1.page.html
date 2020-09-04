@@ -1,17 +1,27 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Tab 1
+    <ion-title style="text-align: center;">
+      Inicio
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content padding >
+  
+  <ion-card id="NongModel" style="margin-top: 35%;">
+    <ion-card-header style="text-align: center;">Sign In</ion-card-header>
+    
+    <ion-item>
+      <ion-label>Usuario: </ion-label>
+      <ion-input type="text" #usr></ion-input>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label>Contraseña: </ion-label>
+      <ion-input type="password" #pwd></ion-input>
+    </ion-item>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+    <ion-button color="primary" style="margin-left: 25%;" (click)="Ingresar(usr.value, pwd.value)" size="large">Ingresar</ion-button>
+
+  </ion-card>
 </ion-content>

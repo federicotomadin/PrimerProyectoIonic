@@ -1,17 +1,21 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 3
+      Tab tres
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content padding>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+  <ion-card [ngStyle]="{'background-color': color}">
+
+    <ion-card-header>Cambiar el color de fondo</ion-card-header>
+    
+    <ion-card-content > 
+      <ion-button block (click)="CambiarColor()">Cambiar Color</ion-button>
+    </ion-card-content>
+    
+  </ion-card>
+
 </ion-content>

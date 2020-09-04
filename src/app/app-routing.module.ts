@@ -8,7 +8,7 @@ const routes: Routes = [
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
   
   },
-  { path: 'tab2', component: Tab2Page }
+  { path: 'tab2', component: Tab2Page },
 ];
 @NgModule({
   imports: [

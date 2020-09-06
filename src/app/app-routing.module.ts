@@ -9,6 +9,10 @@ const routes: Routes = [
   
   },
   { path: 'tab2', component: Tab2Page },
+  {
+    path: 'registro',
+    loadChildren: () => import('./registro/registro.module').then( m => m.RegistroPageModule)
+  },
 ];
 @NgModule({
   imports: [

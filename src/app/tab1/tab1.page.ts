@@ -21,13 +21,13 @@ export class Tab1Page {
 
   users: usuario[];
   // his.users = resp}
-   Ingresar(usr: string, pwd: string) {
+   Ingresar(email: string, pwd: string) {
 
     this.servicio.getUsuarios().subscribe(resp => { 
       
       resp.forEach(r => {
         
-        if(r.usuario ===  usr && r.clave === pwd) {
+        if(r.email ===  email && r.clave === pwd) {
           this.IngresoCorrecto();
         } else {
           this.IngresoIncorrecto();
@@ -63,6 +63,10 @@ private async IngresoIncorrecto() {
 
    await alert.present();
 
+}
+
+Registrar() {
+  this.router.navigate(['/registro']);
 }
 
 }

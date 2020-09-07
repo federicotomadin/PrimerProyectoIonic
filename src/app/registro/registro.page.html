@@ -10,7 +10,7 @@
     <ion-list>
   <ion-item>
     <ion-label>Nombre</ion-label>
-    <ion-input formControlName= "nombre" inputmode="text" placeholder="Nombre"></ion-input>
+    <ion-input [(ngModel)]= "user.nombre" name="nombre" formControlName= "nombre" inputmode="text" placeholder="Nombre"></ion-input>
   </ion-item>
   <div *ngFor= "let error of errorMessages.nombre">
     <ng-container *ngIf= "nombre.hasError(error.type) && (nombre.dirty || nombre.touched)">
@@ -20,7 +20,7 @@
 
   <ion-item>
     <ion-label>Apellido</ion-label>
-    <ion-input formControlName= "apellido" placeholder="Apellido"></ion-input>
+    <ion-input [(ngModel)]= "user.apellido" name="apellido" formControlName= "apellido" placeholder="Apellido"></ion-input>
   </ion-item>
   <div *ngFor= "let error of errorMessages.apellido">
     <ng-container *ngIf= "apellido.hasError(error.type) && (apellido.dirty || apellido.touched)">
@@ -30,7 +30,7 @@
 
   <ion-item>
     <ion-label>Email</ion-label>
-    <ion-input formControlName= "email" placeholder="Email"></ion-input>
+    <ion-input [(ngModel)]= "user.email" name="email"  formControlName= "email" placeholder="Email"></ion-input>
   </ion-item>
   <div *ngFor= "let error of errorMessages.email">
     <ng-container *ngIf= "email.hasError(error.type) && (email.dirty || email.touched)">
@@ -40,7 +40,7 @@
 
   <ion-item>
     <ion-label>Clave</ion-label>
-    <ion-input formControlName= "clave" placeholder="Clave"></ion-input>
+    <ion-input type="password" [(ngModel)]= "user.clave" name="clave" formControlName= "clave" placeholder="Clave"></ion-input>
   </ion-item>
   <div *ngFor= "let error of errorMessages.clave">
     <ng-container *ngIf= "clave.hasError(error.type) && (clave.dirty || clave.touched)">
@@ -50,7 +50,7 @@
 
   <ion-item>
     <ion-label>Repetir Clave</ion-label>
-    <ion-input formControlName= "repetirClave" placeholder="Repetir clave"></ion-input>
+    <ion-input type="password" (ngModel)= "repetirClave" name="repetirClave" formControlName= "repetirClave" placeholder="Repetir clave"></ion-input>
   </ion-item>
   <div *ngFor= "let error of errorMessages.repetirClave">
     <ng-container *ngIf= "repetirClave.hasError(error.type) && (repetirClave.dirty || repetirClave.touched)">
@@ -60,7 +60,8 @@
 </ion-list>
 </form>
 
-  <ion-button color="dark" style="margin-left: 0%;" (click)="Registrar()">Registrarme</ion-button>
+  <ion-button (click)="Registrar()" color="dark"  style="margin-left: 0%;">Registrarme</ion-button>
+
 
 
 </ion-content>

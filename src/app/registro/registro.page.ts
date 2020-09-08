@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { usuario } from '../models/usuarios.interface';
 import { AlertController } from '@ionic/angular';
 import { FormBuilder, Validators, FormControl, FormGroup } from '@angular/forms'
-import { isUndefined } from 'util';
+import { AuthService } from '../servicios/auth.service';
 
 
 @Component({
@@ -90,15 +90,14 @@ export class RegistroPage implements OnInit {
       { type: 'maxlength', message: 'La clave no puede tener mas de 20 caracteres' },
       { type: 'minlength', message: 'La clave debe tenes al menos seis caracteres' } ],
       repetirClave: [
-        { type: 'required', message: 'La confirmacion de la clave es obligatorio' },
-        { type: 'maxlength', message: 'La confirmacion de la clave no puede tener mas de 20 caracteres' } ]
+      { type: 'required', message: 'La confirmacion de la clave es obligatorio' },
+      { type: 'maxlength', message: 'La confirmacion de la clave no puede tener mas de 20 caracteres' } ]
   }
 
 
  user: usuario = new usuario();
 
- 
-  constructor(private formBuider: FormBuilder,public alertController: AlertController,
+  constructor(private authService: AuthService, private formBuider: FormBuilder,public alertController: AlertController,
               private auth: AngularFireAuth, private dataBase: AngularFireDatabase, private router: Router) { }
 
 
@@ -106,45 +105,38 @@ export class RegistroPage implements OnInit {
 
   }
 
-  Registrar() {   
-    let crearUsuario
-    if(this.user.email && this.user.clave) {
-       let errorCode: string;
-       let errorMessage: string;
-       crearUsuario =  this.auth.auth.createUserWithEmailAndPassword(this.user.email, this.user.clave)
- 
-       .then(resp => {   
-         debugger;
-        this.dataBase.object('usuario/' +  resp.user.uid).set({
-        usuario: this.user.email,
-        createAt: new Date(Date.now()).toLocaleDateString("en-AR") + '-' + new Date(Date.now()).toLocaleTimeString("en-AR")
-      });
-      this.RegistroCorrecto(this.user.email);
-      })
-       .catch(function(error)
-       {
-          if (error.code === "auth/email-already-in-use") {
-            errorCode = 'Error en el registro';
-            errorMessage = "El email ya esta en uso";
-          }
-       }).then(resp => {
-         debugger;
-         if (errorCode !== undefined) {
-          this.RegistroIncorrecto(errorCode, errorMessage);      
-         }       
-       })     
-  }
+ Registrar() { 
+    
+    this.authService.onRegister(this.user).then(resp => {
+     console.log(resp);
+     this.CrearUsuarioEnDataBase(resp);
+     this.RegistroCorrecto(this.user.email);
+   })
+   .catch(error => {
+    if (error.code === "auth/email-already-in-use") { 
+      this.RegistroIncorrecto('Error en el registro', 'Ya existe un usuario con este email'); 
+    }
+     }) 
+    }
+
+CrearUsuarioEnDataBase(resp: any) {
+
+  this.dataBase.object('usuario/' +  resp.user.uid).set({
+  usuario: this.user.email,
+  createAt: new Date(Date.now()).toLocaleDateString("en-AR") + '-' + new Date(Date.now()).toLocaleTimeString("en-AR")
+
+}) 
 }
 
   async RegistroCorrecto(email: string) {
     const alert = await  this.alertController.create({
       cssClass: 'my-custom-class',
-      header: 'Bienvenido/a',
+      header: 'Registracion exitosa',
       subHeader: email,
       buttons: ['OK']
     });
     await alert.present();
-    this.router.navigate(['/tab1']);
+    this.router.navigate(['/login']);
   }
 
   public async RegistroIncorrecto(titulo:string, mensaje: string) {

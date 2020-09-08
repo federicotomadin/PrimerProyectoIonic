@@ -1,0 +1,43 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title style="text-align: center;">
+      Inicio
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding >
+  
+  <ion-card id="NongModel" style="margin-top: 35%;">
+    <ion-card-header style="text-align: center;">Tienda Online</ion-card-header>
+    
+    <form [formGroup] = "loginForm" (ngSubmit)="submit()">
+      <ion-list> 
+    <ion-item>
+      <ion-label>Usuario: </ion-label>
+      <ion-input [(ngModel)]= "user.email" formControlName="email" name="email" type="text"></ion-input>
+    </ion-item>
+    <div *ngFor= "let error of errorMessages.email">
+      <ng-container *ngIf= "email.hasError(error.type) && (email.dirty || email.touched)">
+        <small class="error-message">{{error.message}}</small>
+      </ng-container>
+    </div>
+    
+    <ion-item>
+      <ion-label>Contraseña: </ion-label>
+      <ion-input [(ngModel)]= "user.clave" formControlName="clave" name="clave" type="password"></ion-input>
+    </ion-item>
+    <div *ngFor= "let error of errorMessages.clave">
+      <ng-container *ngIf= "clave.hasError(error.type) && (clave.dirty || clave.touched)">
+        <small class="error-message">{{error.message}}</small>
+      </ng-container>
+    </div>
+
+    <ion-button color="light" style="margin-left: 35%;" (click)="Ingresar()" >Ingresar</ion-button><br><br>
+    <ion-router-link  [routerLink]="['/registro']" class="spacing md ion-activatable hydrated">Registrarse</ion-router-link>
+
+  </ion-list>
+  </form>
+
+  </ion-card>
+</ion-content>

@@ -8,7 +8,7 @@ import { AngularFireAuth } from '@angular/fire/auth'
 @Injectable({
   providedIn: 'root'
 })
-export class LoginService { 
+export class AuthService { 
 private coleccion: AngularFirestoreCollection<usuario>
 private usuarios: Observable<usuario[]>
 public isLogged: any = false;
@@ -27,21 +27,20 @@ public isLogged: any = false;
         });
       }
     ))
-
    }
 
 //Login 
 async OnLogin(user: usuario) {
   
-
   try {
 
     return await this.afAuth.auth.signInWithEmailAndPassword(user.email, user.clave);
 
   } catch (error) {
 
-   console.log('Error on login', error);
-    
+   console.log('Error en la creacion del usario', error);
+   throw(error);
+       
   }
 }
 
@@ -52,10 +51,14 @@ async onRegister(user: usuario) {
     return await this.afAuth.auth.createUserWithEmailAndPassword(user.email, user.clave);
     
   } catch (error) {
-    console.log('Error on login', error);
+    // console.log('Error en la creacion del usario', error);
+    throw(error);
   }
 }
 
+logout() {
+  this.afAuth.auth.signOut();
+}
 
   getUsuarios() {
     return this.usuarios;

@@ -99,9 +99,10 @@ export class RegistroPage implements OnInit {
 
   Registrar(form) { 
 
+
     if(form.value.clave !== form.value.repetirClave || form.value.repetirClave == undefined 
       || form.value.repetirClave == null || form.value.repetirClave == 'null' ) {
-      this.RegistroIncorrecto('Error en el registro', 'Las claves no coinciden');
+      // this.RegistroIncorrecto('Error en el registro', 'Las claves no coinciden');
       return;
     }
 

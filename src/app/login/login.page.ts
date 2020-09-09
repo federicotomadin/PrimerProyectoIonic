@@ -58,16 +58,18 @@ export class LoginPage implements OnInit {
    async Ingresar() {
 
     const resp = await this.authService.OnLogin(this.user)
-    .then(resp => { this.IngresoCorrecto() })
+    .then(resp => { 
+      this.IngresoCorrecto() })
     .catch(error => { 
       console.log(error.code);
      if (error.code === 'auth/user-not-found') {
-      this.IngresoIncorrecto("Error Usuario", 'El usuario no existe')
+      this.IngresoIncorrecto("Error de usuario", 'El usuario no existe')
      }
      if (error.code === 'auth/wrong-password') {
-      this.IngresoIncorrecto("Error Contraseña", 'La contraseña es incorrecta')
+      this.IngresoIncorrecto("Error de contraseña", 'La contraseña es incorrecta')
      }
     })
+ 
 }
 
 private async IngresoCorrecto() {
@@ -89,8 +91,7 @@ private async IngresoIncorrecto(titulo:string, mensaje:string) {
     animated: true,
     backdropDismiss: true,
     cssClass: 'my-custom-class',
-    header: 'Error',
-    subHeader: titulo,
+    header: titulo,
     message: mensaje,
     buttons: ['OK']
   });

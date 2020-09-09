@@ -15,18 +15,19 @@ public isLogged: any = false;
 
   constructor(db: AngularFirestore, public afAuth: AngularFireAuth) {
 
-      afAuth.authState.subscribe(resp => { this.isLogged = resp })
+         
+      afAuth.authState.subscribe(resp => { this.isLogged = true })
 
-    this.coleccion = db.collection<usuario>('usuarios');
-    this.usuarios = this.coleccion.snapshotChanges().pipe(map(
-      actions => {
-        return actions.map(a => {
-          const data = a.payload.doc.data();
-          const id  = a.payload.doc.id; 
-          return { id, ...data };
-        });
-      }
-    ))
+    // this.coleccion = db.collection<usuario>('usuarios');
+    // this.usuarios = this.coleccion.snapshotChanges().pipe(map(
+    //   actions => {
+    //     return actions.map(a => {
+    //       const data = a.payload.doc.data();
+    //       const id  = a.payload.doc.id; 
+    //       return { id, ...data };
+    //     });
+    //   }
+    // ))
    }
 
 //Login 
@@ -34,7 +35,7 @@ async OnLogin(user: usuario) {
   
   try {
 
-    return await this.afAuth.auth.signInWithEmailAndPassword(user.email, user.clave);
+    return await (await this.afAuth.auth.signInWithEmailAndPassword(user.email, user.clave)); 
 
   } catch (error) {
 

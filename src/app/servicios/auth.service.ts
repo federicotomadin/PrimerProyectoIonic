@@ -45,7 +45,7 @@ async OnLogin(user: usuario) {
 }
 
 async onRegister(user: usuario) {
-
+  
   try {
 
     return await this.afAuth.auth.createUserWithEmailAndPassword(user.email, user.clave);

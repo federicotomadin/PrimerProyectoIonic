@@ -4,7 +4,7 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { Router } from '@angular/router';
 import { usuario } from '../models/usuarios.interface';
 import { AlertController } from '@ionic/angular';
-import { FormBuilder, Validators, FormControl, FormGroup } from '@angular/forms'
+import { FormBuilder, Validators, FormControl, FormGroup, ValidatorFn, AbstractControl } from '@angular/forms'
 import { AuthService } from '../servicios/auth.service';
 
 
@@ -14,17 +14,6 @@ import { AuthService } from '../servicios/auth.service';
   styleUrls: ['./registro.page.scss'],
 })
 export class RegistroPage implements OnInit {
-
-  matching_passwords_group = new FormGroup({
-    password: new FormControl('', Validators.compose([
-       Validators.minLength(5),
-       Validators.required,
-       Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$') //this is for the letters (both uppercase and lowercase) and numbers validation
-    ])),
-    confirm_password: new FormControl('', Validators.required)
-  }, (formGroup: FormGroup) => {
-     return this.areEqual(formGroup);
-  });
 
   registrationForm = this.formBuider.group({
     nombre: ['', 
@@ -44,36 +33,36 @@ export class RegistroPage implements OnInit {
       Validators.maxLength(40),
       Validators.pattern('^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$')
     ]],
-    clave: new FormControl('', Validators.compose([
+    clave:  ['', [
       Validators.required,
       Validators.maxLength(20),
       Validators.minLength(6)
-    ])),
+    ]],
     repetirClave: ['', 
     [
       Validators.required,
       Validators.maxLength(20), 
       Validators.minLength(6)      
-    ]],
-    matching_passwords: this.matching_passwords_group,
-      terms: new FormControl(false, Validators.pattern('true'))
-  })
+    ]]},
+    {validator: this.MatchPassword }
+  )
 
   get nombre() {
-    return this.registrationForm.get('nombre')
+    return this.registrationForm.get('nombre');
   }
   get apellido() {
-    return this.registrationForm.get('apellido')
+    return this.registrationForm.get('apellido');
   }
   get email() {
-    return this.registrationForm.get('email')
+    return this.registrationForm.get('email');
   }
   get clave() {
-    return this.registrationForm.get('clave')
+    return this.registrationForm.get('clave');
   }
   get repetirClave() {
-    return this.registrationForm.get('repetirClave')
+    return this.registrationForm.get('repetirClave');
   }
+ 
 
   public errorMessages = {
      nombre: [
@@ -86,12 +75,15 @@ export class RegistroPage implements OnInit {
       { type: 'required', message: 'El email es obligatorio' },
       { type: 'maxlength', message: 'El email no puede tener mas de 20 caracteres' } ],
      clave: [
-      { type: 'required', message: 'La clave es obligatorio' },
+      { type: 'required', message: 'La clave es obligatoria' },
       { type: 'maxlength', message: 'La clave no puede tener mas de 20 caracteres' },
-      { type: 'minlength', message: 'La clave debe tenes al menos seis caracteres' } ],
+      { type: 'minlength', message: 'La clave debe tener al menos seis caracteres' } ],
       repetirClave: [
-      { type: 'required', message: 'La confirmacion de la clave es obligatorio' },
-      { type: 'maxlength', message: 'La confirmacion de la clave no puede tener mas de 20 caracteres' } ]
+      { type: 'required', message: 'La confirmacion de la  clave es obligatoria' },
+      { type: 'maxlength', message: 'La clave no puede tener mas de 20 caracteres' },
+      { type: 'minlength', message: 'La clave debe tener al menos seis caracteres' },
+      { type: 'MatchPassword', message: 'Las claves no coinciden' }
+      ],
   }
 
 
@@ -105,17 +97,22 @@ export class RegistroPage implements OnInit {
 
   }
 
- Registrar() { 
-    
+  Registrar(form) { 
+
+    if(form.value.clave !== form.value.repetirClave || form.value.repetirClave == undefined 
+      || form.value.repetirClave == null || form.value.repetirClave == 'null' ) {
+      this.RegistroIncorrecto('Error en el registro', 'Las claves no coinciden');
+      return;
+    }
+
     this.authService.onRegister(this.user).then(resp => {
-     console.log(resp);
      this.CrearUsuarioEnDataBase(resp);
      this.RegistroCorrecto(this.user.email);
    })
    .catch(error => {
     if (error.code === "auth/email-already-in-use") { 
       this.RegistroIncorrecto('Error en el registro', 'Ya existe un usuario con este email'); 
-    }
+    } 
      }) 
     }
 
@@ -174,4 +171,17 @@ CrearUsuarioEnDataBase(resp: any) {
       areEqual: true
     }
    }
+
+   MatchPassword(AC: AbstractControl) {
+    const newPassword = AC.get('clave').value // to get value in input tag
+    const confirmPassword = AC.get('repetirClave').value // to get value in input tag
+     if(newPassword != confirmPassword) {
+         console.log('false');
+         AC.get('repetirClave').setErrors( { MatchPassword: true } )
+     } else {
+         console.log('true')
+         AC.get('repetirClave').setErrors(null);
+     }
+ }
+
 }

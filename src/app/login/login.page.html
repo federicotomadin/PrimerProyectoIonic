@@ -33,7 +33,7 @@
       </ng-container>
     </div>
 
-    <ion-button color="light" style="margin-left: 35%;" (click)="Ingresar()" >Ingresar</ion-button><br><br>
+    <ion-button color="light" style="margin-left: 35%;" (click)="Ingresar()" [disabled] = "loginForm.invalid" >Ingresar</ion-button><br><br>
     <ion-router-link  [routerLink]="['/registro']" class="spacing md ion-activatable hydrated">Registrarse</ion-router-link>
 
   </ion-list>

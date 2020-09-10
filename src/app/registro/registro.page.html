@@ -60,6 +60,10 @@
 </ion-list>
 </form><br>
 
-    <ion-button (click)="Registrar(form)"  color="dark"  style="margin-left: 32%;">Registrarme</ion-button>
+    <ion-button (click)="Registrar(form)" [disabled] = "registrationForm.invalid"  color="dark"  style="margin-left: 32%;">Registrarme</ion-button>
 
 </ion-content>
+
+<pre>
+  {{registrationForm | json}}
+</pre>

@@ -4,7 +4,7 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { Router } from '@angular/router';
 import { usuario } from '../models/usuarios.interface';
 import { AlertController } from '@ionic/angular';
-import { FormBuilder, Validators, FormControl, FormGroup, ValidatorFn, AbstractControl } from '@angular/forms'
+import { FormBuilder, Validators, FormControl, FormGroup, ValidatorFn, AbstractControl, EmailValidator } from '@angular/forms'
 import { AuthService } from '../servicios/auth.service';
 
 
